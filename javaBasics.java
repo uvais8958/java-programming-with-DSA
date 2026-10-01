@@ -50,6 +50,33 @@ public class javaBasics {
         // System.out.println(n);//240
 
 
+        // code calculate sum
+
+        // int a=10;
+        // int b=20;
+        // int sum=a+b;
+        // System.out.print(sum);//30
+            
+         //tow types of comments
+
+         //single line comments
+        // code to calculate sum
+        // hellow
+        // world
+
+        /*
+        multi line comments
+         code to calculate sum
+         hellow
+         world
+        */
+
+
+
+
+
+         
+
 
     }
 }
