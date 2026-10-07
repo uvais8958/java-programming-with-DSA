@@ -1,75 +1,65 @@
 
-
+/**
+ * by the Brutre force Approach
+ * maxSubArray
+ */
 public class maxSubArray {
-    //Max Sub Array sum by Beute Force
-    public static void maxSubArray(int numbers[]){
-      int currSum=0;
-      int maxSum=Integer.MIN_VALUE;
-      for(int i=0;i<numbers.length;i++){
-        int start=i;
-        for(int j=i;j<numbers.length;j++){
-            int end=j;
-            currSum=0;
-            for(int k=start;k<end;k++){
-                currSum=numbers[k];
-                System.out.println(+currSum+" ");
-            }
-               if(maxSum<currSum){
-                 maxSum=currSum;
-                   }
+public static void maxSubarray(int numbers[]){
+  int currentSum=0;
+  int maximumSum=Integer.MIN_VALUE;
+  for(int i=0;i<numbers.length;i++){
+    int start=i;
+    for(int j=i;j<=numbers.length;j++){
+      int end=j;
+      currentSum=0;
+         for(int k=start;k<end;k++){
+             currentSum=numbers[k];
+         }
+         System.out.println(currentSum);
+    
+               if(maximumSum<currentSum){
+               maximumSum=currentSum;
+                }
+    
         }
-      }
-      System.out.print("Maximum Sum:"+maxSum+" ");
-    }
-    public static void main(String args[]){
-
-    int numbers[]={1,-2,6,-1,3}; 
-    maxSubArray(numbers);
-    }
-
+  }
+  System.out.print("Maximum sum="+maximumSum);
+             
 }
 
+  public static void main(String args[]){
+    int numbers[]={1,-2,6,-1,3};
+    maxSubarray(numbers);
+  }
+}
+
+
 /*
-output
+out put
 
-
+0
 1
-
-1 
 -2
-
-1 
--2 
 6
-
-1 
--2 
-6 
 -1
-
+3
+0
 -2
+6
+-1
+3
+0
+6
+-1
+3
+0
+-1
+3
+0
+3
+Maximum sum=6
 
--2 
-6 
-
--2 
-6 
--1 
-
-6 
-6 
--1 
--1 
-
-Maximum Sum:6 
-
-
-
-
-
-
-
-
+Time complextity O(n^3)
 
 
 */ 
