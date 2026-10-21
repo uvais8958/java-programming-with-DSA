@@ -11,6 +11,7 @@ public class characterPattern {
         for(int line=1;line<=num;line++){
             for(int chars=1;chars<=line;chars++){
                 System.out.print(ch);
+               
                 ch++;
 
             }

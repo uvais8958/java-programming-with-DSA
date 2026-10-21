@@ -151,6 +151,58 @@ String v = "Ansari";
 System.out.print(u + " " + v);
 ```
 
+## String Comparison Program
+
+The file `stringCompara.java` demonstrates the difference between comparing strings using `==` and `.equals()` in Java.
+
+### Why This Is Important
+
+In Java, `==` compares reference values, while `.equals()` compares the actual content of the strings.
+
+### Example
+
+```java
+String str1 = "Uvais";
+String str2 = "Uvais";
+String str3 = new String("Uvais");
+
+if(str1 == str2){
+    System.out.println("String is are equals");
+}
+
+if(str1 == str3){
+    System.out.println("is equals");
+}else{
+    System.out.println("is not equals");
+}
+
+if(str1.equals(str3)){
+    System.out.println("is equals");
+}
+```
+
+### Output Summary
+
+- `str1 == str2` is `true` because both reference the same string literal.
+- `str1 == str3` is `false` because `str3` is created as a new object.
+- `str1.equals(str3)` is `true` because both strings have the same content.
+
+### Key Learning
+
+This example helps understand:
+- string references
+- object creation in Java
+- correct string comparison techniques
+
+### Run the Program
+
+```bash
+javac stringCompara.java
+java stringCompara
+```
+
+This is a simple beginner exercise to practice Java string comparison logic.
+
 ## Why This Is Important
 
 String manipulation is a core skill in Java development. It helps developers build:
@@ -188,3 +240,165 @@ java basicString
 ## Author Note
 
 This is a simple Java string practice file intended for learning and skill-building in core Java programming.
+
+## Palindrome Check Program
+
+The file `palindrame.java` demonstrates how to check whether a string is a palindrome.
+
+A palindrome is a word or phrase that reads the same forward and backward, such as `racecar` or `madam`.
+
+### Logic Used
+
+The program compares characters from both ends of the string:
+
+```java
+public static boolean isPalindrome(String str){
+    for(int i=0;i<str.length()/2;i++){
+        int n=str.length();
+        if(str.charAt(i) != str.charAt(n-1-i)){
+            return false;
+        }
+    }
+    return true;
+}
+```
+
+This loop checks the first character against the last, second against the second last, and so on. If any pair does not match, the method returns `false`.
+
+### Example
+
+```java
+String str = "racecar";
+System.out.print(isPalindrome(str)); // true
+```
+
+Another example:
+
+```java
+String str = "raceca";
+System.out.print(isPalindrome(str)); // false
+```
+
+### Why It Matters
+
+Palindrome checks are a common beginner problem in Java and help improve understanding of:
+- String indexing
+- Loop logic
+- Comparison of characters
+- Basic algorithm design
+
+### Run the Program
+
+```bash
+javac palindrame.java
+java palindrame
+```
+
+This program is a simple example of string manipulation and logical thinking in Java.
+
+## Shortest Path Program
+
+The file `shortestPath.java` demonstrates how to calculate the shortest distance from the starting point after following a path of directions.
+
+The program accepts a string containing movement directions such as:
+- `N` = North
+- `S` = South
+- `E` = East
+- `W` = West
+
+It tracks the final position and then calculates the straight-line distance from the origin using the Pythagorean formula.
+
+### Logic Used
+
+```java
+public static float getShortestPath(String path){
+    int x=0,y=0;
+    for(int i=0;i<=path.length()-1;i++){
+        char dir=path.charAt(i);
+        if(dir=='S') y--;
+        if(dir=='N') y++;
+        if(dir=='W') x--;
+        if(dir=='E') x++;
+    }
+    int x2=x*x;
+    int y2=y*y;
+    return (float)Math.sqrt(x2 + y2);
+}
+```
+
+This works by updating the x and y coordinates based on each direction. At the end, it computes:
+
+$$
+\sqrt{x^2 + y^2}
+$$
+
+which gives the shortest path to the destination.
+
+### Example
+
+```java
+String path = "WHEENESENNN";
+System.out.print(getShortestPath(path));
+```
+
+The program prints the shortest distance from the origin after following the route.
+
+### Why It Matters
+
+This is a beginner-friendly example of:
+- string traversal
+- direction-based logic
+- coordinate tracking
+- mathematical calculations in Java
+
+### Run the Program
+
+```bash
+javac shortestPath.java
+java shortestPath
+```
+
+This example helps practice problem-solving with strings and simple geometry.
+
+## Substring Program
+
+The file `substring.java` demonstrates how to extract a substring from a string using a custom method and Java's built-in `substring()` method.
+
+### Logic Used
+
+```java
+public static String subString(String str,int si,int ei ){
+    String substr="";
+    for(int i=0;i<ei;i++){
+        substr += str.charAt(i);
+    }
+    return substr;
+}
+```
+
+This method loops through the string and builds a new string from the chosen range.
+
+### Example
+
+```java
+String str = "HelloWorld";
+System.out.println(subString(str, 0, 5)); // Hello
+System.out.println(str.substring(0, 5)); // Hello
+```
+
+### Why It Matters
+
+Substring operations are commonly used in:
+- text processing
+- searching and filtering
+- validation
+- data parsing
+
+### Run the Program
+
+```bash
+javac substring.java
+java substring
+```
+
+This example helps practice string indexing and basic substring logic in Java.
