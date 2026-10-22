@@ -402,3 +402,155 @@ java substring
 ```
 
 This example helps practice string indexing and basic substring logic in Java.
+
+## Largest String Program
+
+The file `largestString.java` demonstrates how to find the lexicographically largest string in an array of strings.
+
+### What It Does
+
+This program compares strings using Java's `compareTo()` method, which compares strings in dictionary or lexicographic order.
+
+Example:
+
+```java
+String[] fruits = {"apple", "banana", "mango"};
+String largest = fruits[0];
+
+for (int i = 1; i < fruits.length; i++) {
+    if (fruits[i].compareTo(largest) > 0) {
+        largest = fruits[i];
+    }
+}
+
+System.out.println("Largest string: " + largest);
+```
+
+### Why It Matters
+
+This exercise helps practice:
+- array iteration
+- string comparison
+- conditional logic
+- selecting the maximum value from data
+
+### Example Output
+
+```java
+Largest string: mango
+```
+
+In lexicographic order, `mango` comes after `banana` and `apple`, so it is the largest string in the array.
+
+### Run the Program
+
+```bash
+javac largestString.java
+java largestString
+```
+
+This example helps understand how Java compares strings and how to choose the greatest value from a list of text data.
+
+## StringBuilder Program
+
+The file `stringBuilder.java` demonstrates how to use `StringBuilder` in Java for efficient string modification.
+
+`StringBuilder` is mutable, which means you can append characters or text without creating a new string object each time. This makes it useful when building long strings in loops.
+
+### Example
+
+```java
+StringBuilder sb = new StringBuilder("");
+for (char ch = 'a'; ch <= 'z'; ch++) {
+    sb.append(ch);
+}
+System.out.println(sb);
+```
+
+### Why It Matters
+
+This program helps understand:
+- mutable strings
+- efficient string building
+- appending characters in a loop
+
+### Run the Program
+
+```bash
+javac stringBuilder.java
+java stringBuilder
+```
+
+This is a simple beginner example of using `StringBuilder` for dynamic text creation.
+
+## First Letter Uppercase Program
+
+The file `firstLetterUpper.java` demonstrates how to convert the first letter of each word in a string to uppercase while keeping the rest of the text unchanged.
+
+This is useful for formatting names, titles, and user inputs in a cleaner style.
+
+### Example
+
+```java
+String str = "hi,i am uvais";
+System.out.print(toUpperCase(str));
+```
+
+Output:
+
+```java
+Hi,i Am Uvais
+```
+
+### Why It Matters
+
+This program helps practice:
+- string traversal
+- character handling
+- `StringBuilder` usage
+- logic for uppercase conversion after spaces
+
+### Run the Program
+
+```bash
+javac firstLetterUpper.java
+java firstLetterUpper
+```
+
+This is a short and practical example of string manipulation in Java.
+
+## String Compression Program
+
+The file `compression.java` demonstrates a simple run-length encoding technique for strings.
+
+It groups repeated consecutive characters and compresses them into the character followed by its count. For example, `aaabbcccdd` becomes `a3b2c3d2`.
+
+### Example
+
+```java
+String str = "aaabbcccdd";
+System.out.print(comp(str));
+```
+
+Output:
+
+```java
+a3b2c3d2
+```
+
+### Why It Matters
+
+This program helps practice:
+- string traversal
+- counting repeated characters
+- loop logic
+- basic data compression concepts
+
+### Run the Program
+
+```bash
+javac compression.java
+java compression
+```
+
+This is a beginner-friendly example of compressing repeated text in Java.
