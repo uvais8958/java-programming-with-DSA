@@ -37,3 +37,66 @@ This example is a basic introduction to OOPs concepts like:
 - object
 - instance variables
 - methods
+
+## Encapsulation in Java
+
+Encapsulation is one of the core principles of OOPs. It means wrapping data (variables) and the methods that operate on that data into a single class, and protecting the data from direct outside access.
+
+In Java, this is usually done by:
+
+- declaring fields as `private`
+- using `public` getter and setter methods to access or update the data
+- adding validation logic inside setters
+
+### Example: `BankAccount.java`
+
+```java
+package Oops;
+
+public class BankAccount {
+    private double balance;
+
+    public void setBalance(double amount) {
+        if (amount > 0) {
+            balance = amount;
+        } else {
+            System.out.println("Invalid Amount...");
+        }
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public static void main(String[] args) {
+        BankAccount acc = new BankAccount();
+        acc.setBalance(500);
+        System.out.println(acc.getBalance());
+    }
+}
+```
+
+### Why this is encapsulation
+
+- The variable `balance` is `private`, so it cannot be changed directly from outside the class.
+- Only the setter method `setBalance()` can modify it.
+- The setter checks whether the amount is valid before updating the value.
+- The getter method `getBalance()` provides controlled access to the data.
+
+### Benefits of encapsulation
+
+- protects data from accidental modification
+- improves code security
+- makes code easier to maintain
+- helps enforce business rules and validation
+
+### Real-world use
+
+Encapsulation is commonly used in:
+
+- bank accounts
+- employee records
+- student information systems
+- login and authentication classes
+
+This example shows how encapsulation helps control how data is read and modified safely.
