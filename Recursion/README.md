@@ -1,202 +1,261 @@
 # Recursion Basics in Java
 
-## What is Recursion?
+Recursion is a technique where a function calls itself to solve a smaller version of the same problem. It is useful when a problem can be divided into similar subproblems.
 
-Recursion is a programming technique where a function calls itself to solve a smaller version of the same problem. Every recursive function must have:
+## End-to-end flow of recursion
 
-- A base case: stops the recursive calls.
-- A recursive call: moves the problem closer to the base case.
+A recursive function usually has 3 parts:
 
-Recursion is useful for problems like factorial, Fibonacci, tree traversal, and pattern printing.
+1. **Base case**: stops the recursion.
+2. **Recursive call**: calls the same function with a smaller input.
+3. **Work after recursion**: performs action after the smaller problem is solved.
+
+When a function calls itself, Java keeps each call in memory stack. Once the base case is reached, Java starts returning back to previous calls.
+
+Example:
+```java
+public static int fact(int n){
+    if(n == 0 || n == 1){
+        return 1; // base case
+    }
+    return n * fact(n - 1); // recursive call
+}
+```
+
+For `fact(4)`:
+- `fact(4)` -> `4 * fact(3)`
+- `fact(3)` -> `3 * fact(2)`
+- `fact(2)` -> `2 * fact(1)`
+- `fact(1)` -> `1`
+
+Then Java returns step by step:
+- `fact(2)` -> `2 * 1 = 2`
+- `fact(3)` -> `3 * 2 = 6`
+- `fact(4)` -> `4 * 6 = 24`
+
+So the answer is `24`.
 
 ---
 
-## File: `RecursionBasic.java`
+## 1) Factorial
 
-This file contains basic recursion examples that cover:
-
-1. Factorial calculation
-2. Fibonacci series
-3. Printing numbers in descending order
-4. Printing numbers in ascending order
-
----
-
-## 1) Factorial Program
-
-### Question
-How to calculate factorial of a number using recursion?
+### Problem
+Find the factorial of a number.
 
 ### Code
 ```java
 public static int fact(int n){
-    if(n==0 || n==1){
+    if(n == 0 || n == 1){
         return 1;
     }
-    return n * fact(n-1);
+    return n * fact(n - 1);
 }
 ```
 
-### Explanation
-- Base case: if `n == 0` or `n == 1`, return `1`.
-- Recursive step: multiply `n` with `fact(n-1)`.
+### How it works
+- If `n` is `0` or `1`, return `1`.
+- Otherwise, call the same method with `n - 1`.
+- Multiply the current number with the result of the smaller call.
 
 ### Example
-`fact(5)` = `5 * 4 * 3 * 2 * 1 = 120`
-
-### Output
 ```java
-System.out.print(fact(5)); // 120
+System.out.println(fact(5)); // 120
 ```
 
 ---
 
-## 2) Fibonacci Series
+## 2) Fibonacci
 
-### Question
-How to print or calculate Fibonacci numbers using recursion?
+### Problem
+Find the nth Fibonacci number.
 
 ### Code
 ```java
-public static int fibon(int n){
+public static int fib(int n){
     if(n <= 1){
         return n;
     }
-    return fibon(n-1) + fibon(n-2);
+    return fib(n - 1) + fib(n - 2);
 }
 ```
 
-### Explanation
-- Base case: `n <= 1` returns `n`.
-- Recursive step: add the previous two Fibonacci values.
+### How it works
+- If `n` is `0` or `1`, return `n`.
+- Else, add results of previous two Fibonacci numbers.
 
 ### Example
-Fibonacci sequence:
-`0, 1, 1, 2, 3, 5, 8, 13, ...`
-
-`fibon(6)` returns `8`
-
-### Output
 ```java
-System.out.println(fibon(6)); // 8
+System.out.println(fib(6)); // 8
 ```
 
+Fibonacci sequence:
+`0, 1, 1, 2, 3, 5, 8, ...`
+
 ### Note
-This method is simple but not efficient for large values because it repeats the same subproblems many times.
+This is a classic recursive example, but it is not efficient for large values because the same values are recalculated many times.
 
 ---
 
-## 3) Print Numbers from N to 1
-
-### Question
-How to print numbers in decreasing order using recursion?
+## 3) Print numbers from N to 1
 
 ### Code
 ```java
 public static void printDec(int n){
     if(n == 1){
-        System.out.print(n);
+        System.out.print(n + " ");
         return;
     }
     System.out.print(n + " ");
-    printDec(n-1);
+    printDec(n - 1);
 }
 ```
 
-### Explanation
-- If `n == 1`, print `1` and stop.
-- Otherwise, print `n` and call `printDec(n-1)`.
+### How it works
+- Print the current value.
+- Call the function again with `n - 1`.
+- Stop when `n` becomes `1`.
 
 ### Example
-For `printDec(10)`, output is:
 ```java
-10 9 8 7 6 5 4 3 2 1
+printDec(5);
 ```
 
-### Logic
-This is a classic example of recursion where the function works from the current number down to the base case.
+Output:
+```java
+5 4 3 2 1
+```
 
 ---
 
-## 4) Print Numbers from 1 to N
-
-### Question
-How to print numbers in increasing order using recursion?
+## 4) Print numbers from 1 to N
 
 ### Code
 ```java
-public static void printIncre(int n){
+public static void printInc(int n){
     if(n == 1){
         System.out.print(n + " ");
         return;
     }
-    printIncre(n-1);
+    printInc(n - 1);
     System.out.print(n + " ");
 }
 ```
 
-### Explanation
-- First reduce the problem by calling `printIncre(n-1)`.
-- Once the smaller value reaches `1`, print it.
-- Then print the current value in reverse order of recursion.
+### How it works
+- First reduce the problem to smaller values.
+- When it reaches `1`, print it.
+- Then print the current values while returning from recursion.
 
 ### Example
-For `printIncre(10)`, output is:
 ```java
-1 2 3 4 5 6 7 8 9 10
+printInc(5);
 ```
 
-### Logic
-This is a recursive pattern where the smaller problem is solved first, and the current value is added afterward.
+Output:
+```java
+1 2 3 4 5
+```
 
 ---
 
-## 5) Main Method
-
-### Question
-How are these recursion methods executed in the program?
+## 5) Check if array is sorted
 
 ### Code
 ```java
-public static void main(String args[]){
-    int n = 10;
-
-    // System.out.print(fact(n));
-    // System.out.println(fibon(n));
-    // printDec(n);
-    printIncre(n);
+public static boolean checkSh(int arr[], int index){
+    if(index == arr.length - 1){
+        return true;
+    }
+    if(arr[index] > arr[index + 1]){
+        return false;
+    }
+    return checkSh(arr, index + 1);
 }
 ```
 
-### Explanation
-- `n` is set to `10`.
-- The examples are commented out.
-- The active call is `printIncre(10)`.
+### How it works
+- Base case: when index reaches the last element, array is sorted so far.
+- Compare current value with next value.
+- If any value is greater than the next value, array is not sorted.
+- Otherwise, move to the next index.
 
-### Output
+### Example
 ```java
-1 2 3 4 5 6 7 8 9 10
+int arr[] = {1, 2, 3, 4, 5};
+System.out.println(checkSh(arr, 0)); // true
 ```
 
 ---
 
-## Key Points of Recursion
+## 6) Find first occurrence of a key
 
-1. Base case is mandatory to stop repeated calls.
-2. Recursive calls reduce the problem size.
-3. Every call uses stack memory.
-4. Too many recursive calls can cause stack overflow.
-5. Recursion is useful for problems that have repeated subproblems.
+### Code
+```java
+public static int firstAcc(int arr[], int key, int i){
+    if(i == arr.length - 1){
+        return -1;
+    }
+    if(arr[i] == key){
+        return i;
+    }
+    return firstAcc(arr, key, i + 1);
+}
+```
+
+### How it works
+- Check the current element.
+- If it matches the key, return its index.
+- Otherwise, move to next index.
+- If no match is found, return `-1`.
+
+### Example
+```java
+int arr[] = {8, 2, 6, 9, 5, 10, 7};
+System.out.println(firstAcc(arr, 5, 0)); // 4
+```
 
 ---
 
+## 7) Sum of first natural numbers
+
+### Code
+```java
+public static int cal(int n){
+    if(n == 1){
+        return 1;
+    }
+    int snm1 = cal(n - 1);
+    int sn = n + snm1;
+    return sn;
+}
+```
+
+### How it works
+- Recursively calculate sum up to `n - 1`.
+- Add current number `n` to that result.
+
+### Example
+```java
+System.out.println(cal(5)); // 15
+```
+
+---
+
+## Key points to remember
+
+- A recursive function must have a base case.
+- Each recursive call should reduce the problem size.
+- Too many recursive calls may cause stack overflow.
+- Recursion is easy to write for problems with repeated subproblems.
+
 ## Summary
 
-This file is a beginner-level recursion practice set. It teaches:
+Recursion is a powerful concept in Java where a function solves a problem by reducing it into smaller similar problems. In this folder, we practiced:
+- factorial
+- Fibonacci
+- number printing
+- sorted array check
+- first occurrence search
+- sum of natural numbers
 
-- factorial recursion
-- Fibonacci recursion
-- recursive number printing in descending order
-- recursive number printing in ascending order
-
-These are basic but important concepts for understanding recursion in Java.
+These examples help build the foundation for understanding recursion before moving to more advanced topics like trees, backtracking, and divide-and-conquer algorithms.
