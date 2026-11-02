@@ -239,23 +239,19 @@ public static int cal(int n){
 System.out.println(cal(5)); // 15
 ```
 
----
+### End-to-end flow of this approach
 
-## Key points to remember
+This approach follows the pattern:
 
-- A recursive function must have a base case.
-- Each recursive call should reduce the problem size.
-- Too many recursive calls may cause stack overflow.
-- Recursion is easy to write for problems with repeated subproblems.
+1. Reduce the problem to a smaller version.
+2. Solve the smaller problem first.
+3. Add the current value back while returning.
 
-## Summary
+For `cal(5)`, Java executes:
 
-Recursion is a powerful concept in Java where a function solves a problem by reducing it into smaller similar problems. In this folder, we practiced:
-- factorial
-- Fibonacci
-- number printing
-- sorted array check
-- first occurrence search
-- sum of natural numbers
+.
 
-These examples help build the foundation for understanding recursion before moving to more advanced topics like trees, backtracking, and divide-and-conquer algorithms.
+
+
+
+
