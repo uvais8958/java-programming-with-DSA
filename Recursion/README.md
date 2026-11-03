@@ -35,6 +35,18 @@ Then Java returns step by step:
 
 So the answer is `24`.
 
+### How recursion works internally
+
+Every time a function is called, Java creates a new frame in the call stack. Each frame stores:
+- local variables
+- parameters
+- return address
+- current execution state
+
+When the base case matches, the function returns immediately. Then Java pops the stack frame and continues from the previous call.
+
+This is why recursion is powerful for problems that can be broken into smaller subproblems, but it must be designed carefully to avoid stack overflow.
+
 ---
 
 ## 1) Factorial
@@ -247,9 +259,460 @@ This approach follows the pattern:
 2. Solve the smaller problem first.
 3. Add the current value back while returning.
 
-For `cal(5)`, Java executes:
+For `cal(5)`, Java executes the following recursion:
 
-.
+```java
+cal(5)
+-> cal(4)
+   -> cal(3)
+      -> cal(2)
+         -> cal(1)
+            -> returns 1
+         -> returns 2 + 1 = 3
+      -> returns 3 + 3 = 6
+   -> returns 4 + 6 = 10
+-> returns 5 + 10 = 15
+```
+
+So the final result is:
+
+```java
+cal(5) = 15
+```
+
+
+
+---
+
+## 8) Binary strings without consecutive 1s
+
+This is a classic recursive backtracking problem. We generate all binary strings of length `n` in which no two adjacent bits are `1`.
+
+### Code
+```java
+public static void binaryString(int n, int lastPlaced, String str){
+    if(n == 0){
+        System.out.println(str);
+        return;
+    }
+
+    binaryString(n - 1, 0, str + "0");
+
+    if(lastPlaced == 0){
+        binaryString(n - 1, 1, str + "1");
+    }
+}
+```
+
+### How it works
+- At each step, we always try to place `0`.
+- We place `1` only if the previous placed value is `0`.
+- When `n` becomes `0`, we print the final string.
+
+### Example
+```java
+binaryString(3, 0, "");
+```
+
+Output:
+```java
+000
+001
+010
+100
+101
+```
+
+---
+
+## 9) Friends Pairing Problem
+
+### Problem
+Count the number of ways in which `n` friends can be paired up or left single.
+
+### Code
+```java
+public static int pair(int n){
+    if(n == 1 || n == 2){
+        return n;
+    }
+
+    int single = pair(n - 1);
+    int pairs = pair(n - 1) * pair(n - 2);
+    return single + pairs;
+}
+```
+
+### End-to-end flow of the recursion
+
+The idea is to break the problem into smaller subproblems:
+
+1. The `n`th friend stays single.
+2. The `n`th friend pairs with one of the other `n - 1` friends.
+
+This gives the recursive thinking behind the function.
+
+### Step-by-step execution for `pair(3)`
+
+```java
+pair(3)
+-> pair(2) + pair(2) * pair(1)
+   -> pair(2) returns 2
+   -> pair(1) returns 1
+
+single = 2
+pairs = 2 * 1 = 2
+return 2 + 2 = 4
+```
+
+So:
+
+```java
+pair(3) = 4
+```
+
+### Why the function calls itself
+
+The recursion is divided into two parts:
+
+- `single = pair(n - 1)`
+  - This means the last friend does not pair with anyone and remains single.
+
+- `pairs = pair(n - 1) * pair(n - 2)`
+  - This means the last friend pairs with someone, so we recursively count ways for the remaining friends.
+
+After both branches are solved, the function adds them:
+
+```java
+return single + pairs;
+```
+
+### Call stack flow
+
+For `pair(4)`, Java works like this:
+
+```java
+pair(4)
+-> pair(3) + pair(3) * pair(2)
+   -> pair(3)
+      -> pair(2)
+         -> pair(1)
+      -> pair(2)
+   -> pair(2)
+```
+
+The function keeps reducing the problem size until it reaches the base case (`n == 1` or `n == 2`).
+
+Once the base cases return values, Java starts unwinding the stack and combines the results from smaller calls to build the final answer.
+
+### Important note
+
+The standard friends-pairing recurrence is:
+
+```java
+f(n) = f(n - 1) + (n - 1) * f(n - 2)
+```
+
+This represents:
+- leave the last friend single
+- or pair them with one of the other `n - 1` friends
+
+This is a classic recursive counting problem where each smaller subproblem is solved first, then the results are combined.
+
+---
+
+## 10) Tilling Problem
+
+### Problem
+Count the number of ways to tile a `2 x n` board using `2 x 1` tiles.
+
+### Code
+```java
+public static int tillingP(int n){
+    if(n == 0 || n == 1){
+        return 1;
+    }
+
+    int fnm1 = tillingP(n - 1);
+    int fnm2 = tillingP(n - 2);
+    int totalWays = fnm1 + fnm2;
+    return totalWays;
+}
+```
+
+### Short forms meaning
+
+The variables in this code are short names used for easier understanding:
+
+- `fnm1` = ways for `n - 1`
+- `fnm2` = ways for `n - 2`
+- `totalWays` = final answer for the current `n`
+
+So the function is using the recurrence:
+
+```java
+f(n) = f(n - 1) + f(n - 2)
+```
+
+### End-to-end flow of the recursion
+
+This problem is divided into two choices:
+
+1. Place a vertical tile on the last column.
+2. Place two horizontal tiles on the last two columns.
+
+These two choices reduce the problem to smaller sizes:
+
+- `tillingP(n - 1)` -> one column is filled
+- `tillingP(n - 2)` -> two columns are filled
+
+Then both results are added:
+
+```java
+int totalWays = fnm1 + fnm2;
+```
+
+### Example: `tillingP(4)`
+
+```java
+tillingP(4)
+-> tillingP(3) + tillingP(2)
+   -> tillingP(3)
+      -> tillingP(2) + tillingP(1)
+         -> tillingP(2)
+            -> tillingP(1) + tillingP(0)
+               -> 1 + 1 = 2
+         -> 2 + 1 = 3
+   -> tillingP(2) = 2
+
+return 3 + 2 = 5
+```
+
+So:
+
+```java
+System.out.println(tillingP(4)); // 5
+```
+
+### Important note
+
+Base cases:
+
+```java
+if(n == 0 || n == 1){
+    return 1;
+}
+```
+
+This means:
+- a board of size `0` has 1 way to tile it
+- a board of size `1` also has 1 way to tile it
+
+This is the standard recursive structure for the tilling problem, where each smaller subproblem is solved first and then combined to get the final answer.
+
+---
+
+## 11) Power Recursion
+
+### Problem
+Find the value of `x^n` using recursion.
+
+### Code
+```java
+public static int power(int x, int n){
+    if(n == 0){
+        return 1;
+    }
+
+    int half = power(x, n - 1);
+    return x * half;
+}
+```
+
+### How it works
+This is the simple recursive version.
+
+- Base case: if `n == 0`, return `1`.
+- Otherwise, reduce the power by `1`.
+- Multiply the current value of `x` with the result of the smaller recursion.
+
+### Example
+```java
+System.out.println(power(2, 5)); // 32
+```
+
+### End-to-end flow for `power(2, 5)`
+
+```java
+power(2, 5)
+-> power(2, 4)
+   -> power(2, 3)
+      -> power(2, 2)
+         -> power(2, 1)
+            -> power(2, 0)
+               -> returns 1
+            -> returns 2 * 1 = 2
+         -> returns 2 * 2 = 4
+      -> returns 2 * 4 = 8
+   -> returns 2 * 8 = 16
+-> returns 2 * 16 = 32
+```
+
+So the final result is:
+
+```java
+power(2, 5) = 32
+```
+
+---
+
+### Optimized recursive power
+
+A faster version uses divide-and-conquer logic.
+
+```java
+public static int optimizeSolution(int x, int n){
+    if(n == 0){
+        return 1;
+    }
+
+    int half = optimizeSolution(x, n / 2);
+
+    if(n % 2 == 0){
+        return half * half;
+    } else {
+        return x * half * half;
+    }
+}
+```
+
+### Why this is faster
+
+Instead of reducing `n` by `1` each time, this version reduces `n` by half.
+
+- If `n` is even: `x^n = (x^(n/2))^2`
+- If `n` is odd: `x^n = x * (x^(n/2))^2`
+
+This reduces the number of recursive calls dramatically.
+
+### Example
+```java
+System.out.println(optimizeSolution(2, 3)); // 8
+```
+
+### End-to-end flow for `optimizeSolution(2, 3)`
+
+```java
+optimizeSolution(2, 3)
+-> optimizeSolution(2, 1)
+   -> optimizeSolution(2, 0)
+      -> returns 1
+   -> n is odd, so return 2 * 1 * 1 = 2
+-> n is odd, so return 2 * 2 * 2 = 8
+```
+
+So:
+
+```java
+optimizeSolution(2, 3) = 8
+```
+
+### Short variable explanation
+
+- `half` = result of `x^(n/2)`
+- if `n` is even, we square it
+- if `n` is odd, multiply by `x` once more
+
+This is the core idea of optimized exponentiation using recursion.
+
+---
+
+## 12) Last Occurrence of a Key
+
+### Problem
+Find the index of the last occurrence of a key in an array.
+
+### Code
+```java
+public static int lastAccu(int arr[], int key, int index){
+    if(index == arr.length){
+        return -1;
+    }
+
+    int isFound = lastAccu(arr, key, index + 1);
+
+    if(isFound == -1 && arr[index] == key){
+        return index;
+    }
+    return isFound;
+}
+```
+
+### How it works
+This solution searches from left to right by recursion, but it checks the result while returning from recursion.
+
+- Base case: if `index` reaches the end of the array, return `-1`.
+- Recursively search the rest of the array.
+- When returning back, check whether:
+  - a match was found later, or
+  - the current element is the key and no later match was found.
+
+### Example
+```java
+int arr[] = {2, 4, 6, 8, 4, 10};
+int key = 4;
+System.out.println(lastAccu(arr, key, 0)); // 4
+```
+
+### End-to-end flow for `lastAccu(arr, 4, 0)`
+
+```java
+lastAccu([2,4,6,8,4,10], 4, 0)
+-> lastAccu([2,4,6,8,4,10], 4, 1)
+   -> lastAccu([2,4,6,8,4,10], 4, 2)
+      -> lastAccu([2,4,6,8,4,10], 4, 3)
+         -> lastAccu([2,4,6,8,4,10], 4, 4)
+            -> lastAccu([2,4,6,8,4,10], 4, 5)
+               -> lastAccu([2,4,6,8,4,10], 4, 6)
+                  -> returns -1
+            -> arr[5] = 10, not key, return -1
+         -> arr[4] = 4, isFound == -1, return 4
+      -> arr[3] = 8, not key, return 4
+   -> arr[2] = 6, not key, return 4
+-> arr[1] = 4, but isFound already 4, return 4
+```
+
+So the last index found is:
+
+```java
+4
+```
+
+### Why this works
+
+The important logic is:
+
+```java
+if(isFound == -1 && arr[index] == key){
+    return index;
+}
+```
+
+This means:
+- if no match was found in the later part of the array,
+- and the current element matches the key,
+- then this current index is the last valid occurrence.
+
+This is a classic example of recursive “check while returning” logic.
+
+---
+
+
+
+
+
+
+
 
 
 
