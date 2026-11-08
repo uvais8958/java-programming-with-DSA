@@ -38,11 +38,7 @@ public static int partition(int arr[],int si,int ei){
     arr[ei]=arr[i];
     arr[i]=temp;
     return i;
-}
-
-
-
-    public static void main(String args[]){
+}    public static void main(String args[]){
     int arr[]={6,3,9,8,2,5};
    quickSort(arr, 0, arr.length-1);
    printArray(arr);
