@@ -2,6 +2,8 @@ package Array.Prectice;
 
 import java.util.Arrays;
 
+//Brute force Approach
+
 public class SecondLargest {
 
     public static int secondLar(int arr[]){
