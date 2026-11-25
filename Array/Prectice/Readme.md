@@ -312,3 +312,157 @@ java Array.Prectice.removeDuplicatesOpt
 ## Comparison With the HashSet Approach
 
 The HashSet-based approach is useful for both sorted and unsorted arrays, but it requires additional memory. The optimized two-pointer approach is better when the input array is already sorted because it runs in $O(n)$ time with $O(1)$ extra space.
+
+---
+
+# Left Rotate an Array by One Place
+
+The `LeftRotatedOnePlace.java` program rotates an array to the left by **one position**.
+
+After one left rotation:
+
+- The first element moves to the last position.
+- Every other element moves one position to the left.
+
+For example:
+
+```text
+Original: [1, 2, 3, 4, 5]
+Rotated:  [2, 3, 4, 5, 1]
+```
+
+## File Structure
+
+```text
+LeftRotatedOnePlace.java
+└── LeftRotatedOnePlace
+    └── main(String args[])  // Stores, rotates, and prints a sample array
+```
+
+## How the Algorithm Works
+
+The program uses a temporary variable and one loop:
+
+1. Store the first element in `temp`.
+2. Traverse the array from index `0` to `length - 2`.
+3. Move each element one position to the left using `arr[i] = arr[i + 1]`.
+4. Store `temp` in the last position of the array.
+5. Print all elements of the rotated array.
+
+```java
+int temp = arr[0];
+
+for (int i = 0; i < arr.length - 1; i++) {
+    arr[i] = arr[i + 1];
+}
+
+arr[arr.length - 1] = temp;
+```
+
+The temporary variable is necessary because the first element would otherwise be lost after copying the second element over it.
+
+## Example Walkthrough
+
+For:
+
+```java
+int arr[] = {1, 2, 3, 4, 5};
+```
+
+### Step 1: Store the first element
+
+```java
+int temp = arr[0]; // temp = 1
+```
+
+### Step 2: Shift elements left
+
+| Iteration | `i` | Assignment | Array after assignment |
+|---|---:|---|---|
+| 1 | 0 | `arr[0] = arr[1]` | `[2, 2, 3, 4, 5]` |
+| 2 | 1 | `arr[1] = arr[2]` | `[2, 3, 3, 4, 5]` |
+| 3 | 2 | `arr[2] = arr[3]` | `[2, 3, 4, 4, 5]` |
+| 4 | 3 | `arr[3] = arr[4]` | `[2, 3, 4, 5, 5]` |
+
+### Step 3: Move the saved first element to the end
+
+```java
+arr[arr.length - 1] = temp;
+```
+
+The final array becomes:
+
+```text
+[2, 3, 4, 5, 1]
+```
+
+## Complete Program
+
+```java
+package Array.Prectice;
+
+public class LeftRotatedOnePlace {
+
+    public static void main(String args[]) {
+        int arr[] = {1, 2, 3, 4, 5};
+
+        int temp = arr[0];
+
+        for (int i = 0; i < arr.length - 1; i++) {
+            arr[i] = arr[i + 1];
+        }
+
+        arr[arr.length - 1] = temp;
+
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i] + " ");
+        }
+    }
+}
+```
+
+## Output
+
+```text
+2 3 4 5 1 
+```
+
+## Logic for Printing
+
+After rotation, a separate loop prints each array element:
+
+```java
+for (int i = 0; i < arr.length; i++) {
+    System.out.print(arr[i] + " ");
+}
+```
+
+`System.out.print()` prints values on the same line, with a space after every value.
+
+## Edge Cases
+
+| Input | Result | Explanation |
+|---|---|---|
+| `{}` | Error | The current code accesses `arr[0]`, so it is invalid for an empty array. |
+| `{7}` | `{7}` | Storing `7` and shifting zero elements leaves the array unchanged. |
+| `{1, 2}` | `{2, 1}` | The second element moves first and `1` moves to the end. |
+| `{5, 5, 5}` | `{5, 5, 5}` | All values are equal, so the array looks unchanged. |
+
+For a production-ready method, check the array length before accessing `arr[0]`:
+
+```java
+if (arr.length == 0) {
+    return;
+}
+```
+
+## Complexity
+
+- **Time complexity:** $O(n)$
+  - The shifting loop visits $n - 1$ elements.
+  - The printing loop visits $n$ elements.
+  - Therefore, the total work is $O(n)$.
+- **Extra space complexity:** $O(1)$
+  - Only one extra variable, `temp`, is used.
+  - The rotation is performed directly in the original array.
+
