@@ -298,7 +298,7 @@ Unique elements:5
 ## Complexity
 
 - **Time complexity:** $O(n)$, where $n$ is the array length. The `j` pointer visits each element once.
-- **Extra space complexity:** $O(1)$. No additional collection or array is created; duplicates are removed by overwriting positions in the original array.
+- **Extra space complexity:** $O(1)`. No additional collection or array is created; duplicates are removed by overwriting positions in the original array.
 
 ## Running the Program
 
@@ -465,4 +465,254 @@ if (arr.length == 0) {
 - **Extra space complexity:** $O(1)$
   - Only one extra variable, `temp`, is used.
   - The rotation is performed directly in the original array.
+
+---
+
+# Left Rotate an Array by D Places
+
+The `rotatedOptimal.java` program rotates an array to the **left** by `d` positions using the **reverse algorithm**.
+
+After a left rotation by `d`, the first `d` elements move to the end, while the remaining elements move toward the beginning.
+
+For example:
+
+```text
+Original: [1, 2, 3, 4, 5, 6, 7]
+d = 3
+Rotated:  [4, 5, 6, 7, 1, 2, 3]
+```
+
+
+
+## How the Reverse Algorithm Works
+
+To left rotate an array, the program reverses three sections:
+
+1. Reverse the first `d` elements.
+2. Reverse the remaining `n - d` elements.
+3. Reverse the entire array.
+
+The implementation is:
+
+```java
+public static void rotated(int arr[], int d) {
+    int n = arr.length;
+
+    if (n == 0) {
+        return;
+    }
+
+    d = d % n;
+
+    reverse(arr, 0, d - 1);
+    reverse(arr, d, n - 1);
+    reverse(arr, 0, n - 1);
+}
+```
+
+The following method reverses an array section in place:
+
+```java
+public static void reverse(int arr[], int start, int end) {
+    while (start < end) {
+        int temp = arr[start];
+        arr[start] = arr[end];
+        arr[end] = temp;
+
+        start++;
+        end--;
+    }
+}
+```
+
+## Why `d = d % n` Is Used
+
+Rotating an array by multiples of its length produces the original array again.
+
+Therefore, the effective rotation is:
+
+```java
+d = d % n;
+```
+
+Examples:
+
+| Array length | Requested `d` | Effective `d` |
+|---:|---:|---:|
+| 7 | 3 | 3 |
+| 7 | 7 | 0 |
+| 7 | 10 | 3 |
+| 7 | 14 | 0 |
+
+For a negative value of `d`, Java's remainder can also be negative. The current implementation expects a non-negative `d`. A reusable method can validate or normalize negative values before reversing:
+
+```java
+d = d % n;
+
+if (d < 0) {
+    d += n;
+}
+```
+
+## Complete Example Walkthrough
+
+For:
+
+```java
+int arr[] = {1, 2, 3, 4, 5, 6, 7};
+int d = 3;
+```
+
+The array length is `7`, and `3 % 7` remains `3`.
+
+### Step 1: Reverse the first `d` elements
+
+Reverse indices `0` through `2`:
+
+```text
+Before: [1, 2, 3, 4, 5, 6, 7]
+After:  [3, 2, 1, 4, 5, 6, 7]
+```
+
+### Step 2: Reverse the remaining elements
+
+Reverse indices `3` through `6`:
+
+```text
+Before: [3, 2, 1, 4, 5, 6, 7]
+After:  [3, 2, 1, 7, 6, 5, 4]
+```
+
+### Step 3: Reverse the entire array
+
+Reverse indices `0` through `6`:
+
+```text
+Before: [3, 2, 1, 7, 6, 5, 4]
+After:  [4, 5, 6, 7, 1, 2, 3]
+```
+
+The final array is rotated left by three positions.
+
+## Reverse Operation Walkthrough
+
+The `reverse()` method works by swapping elements at the `start` and `end` positions.
+
+For:
+
+```text
+[1, 2, 3, 4, 5]
+start = 0
+end = 4
+```
+
+| Iteration | Swap | Result |
+|---:|---|---|
+| 1 | `1` and `5` | `[5, 2, 3, 4, 1]` |
+| 2 | `2` and `4` | `[5, 4, 3, 2, 1]` |
+| 3 | stop because `start >= end` | `[5, 4, 3, 2, 1]` |
+
+A temporary variable is required so that neither swapped value is lost.
+
+## Complete Program
+
+```java
+package Array.Prectice;
+
+public class rotatedOptimal {
+
+    public static void rotated(int arr[], int d) {
+        int n = arr.length;
+
+        if (n == 0) {
+            return;
+        }
+
+        d = d % n;
+
+        reverse(arr, 0, d - 1);
+        reverse(arr, d, n - 1);
+        reverse(arr, 0, n - 1);
+    }
+
+    public static void reverse(int arr[], int start, int end) {
+        while (start < end) {
+            int temp = arr[start];
+            arr[start] = arr[end];
+            arr[end] = temp;
+
+            start++;
+            end--;
+        }
+    }
+
+    public static void main(String args[]) {
+        int arr[] = {1, 2, 3, 4, 5, 6, 7};
+        int d = 3;
+
+        rotated(arr, d);
+
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i] + " ");
+        }
+    }
+}
+```
+
+## Output
+
+```text
+4 5 6 7 1 2 3 
+```
+
+## Printing the Result
+
+After rotation, `main()` prints every element using:
+
+```java
+for (int i = 0; i < arr.length; i++) {
+    System.out.print(arr[i] + " ");
+}
+```
+
+`System.out.print()` keeps all values on the same output line, and the extra space is printed after each value.
+
+## Edge Cases
+
+| Input | `d` | Result | Explanation |
+|---|---:|---|---|
+| `{}` | 3 | `{}` | The method returns immediately for an empty array. |
+| `{7}` | 3 | `{7}` | `d % n` becomes `0`, so the array is unchanged. |
+| `{1, 2, 3}` | 0 | `{1, 2, 3}` | No effective rotation occurs. |
+| `{1, 2, 3}` | 3 | `{1, 2, 3}` | Rotating by the array length returns the original array. |
+| `{1, 2, 3, 4, 5}` | 7 | `{3, 4, 5, 1, 2}` | `7 % 5` leaves an effective rotation of `2`. |
+| `{5, 5, 5}` | 1 | `{5, 5, 5}` | Equal values make the result appear unchanged. |
+| `{1, 2, 3}` | -1 | Undefined for this implementation | Negative values need explicit normalization before reversal. |
+
+## Complexity Analysis
+
+For an array of length `n`:
+
+- **Time complexity:** $O(n)$
+  - The first reversal touches at most `d` elements.
+  - The second reversal touches at most `n - d` elements.
+  - The final reversal touches `n` elements.
+  - The total number of swaps is still linear with respect to `n`.
+- **Extra space complexity:** $O(1)`
+  - Only a few integer variables and one temporary swap variable are used.
+  - Rotation is performed directly inside the original array.
+
+## Advantages
+
+- Uses only constant extra space.
+- Runs in linear time.
+- Handles rotations larger than the array length through modulo operation.
+- Avoids repeated element shifts or copying into another array.
+
+## Limitations
+
+- The current method is designed for a non-negative rotation value `d`.
+- `d = d % n` does not normalize negative Java remainders.
+- If the method is reused with many different arrays, it mutates the original array directly.
+
 
